@@ -128,8 +128,8 @@ export default function Historico() {
                         </div>
                         <div>
                           <CardTitle className="text-base capitalize">
-                            {new Date(meeting.date + 'T12:00:00').toLocaleDateString('pt-BR', {
-                              weekday: 'long', day: '2-digit', month: 'long', year: 'numeric'
+                            {new Date(meeting.date).toLocaleDateString('pt-BR', {
+                              weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC'
                             })}
                           </CardTitle>
                         </div>

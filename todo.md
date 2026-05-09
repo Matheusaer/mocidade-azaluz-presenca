@@ -23,3 +23,6 @@
 - [x] Dashboard: dar destaque maior ao botão/card de Registrar Presença
 - [x] Histórico: permitir selecionar encontros já realizados e editar presença
 - [x] Registrar Presença: lista de alunos em ordem alfabética, clicar no nome para marcar
+- [ ] Bug: datas aparecem como "Invalid Date" no Histórico de Encontros
+- [ ] Bug fix: datas "Invalid Date" no Histórico - problema de serialização da data do MySQL
+- [ ] Trocar logo para versão com fundo preto e aumentar tamanho na sidebar
