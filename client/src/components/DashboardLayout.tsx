@@ -21,15 +21,18 @@ import {
 } from "@/components/ui/sidebar";
 import { getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users } from "lucide-react";
+import { LayoutDashboard, LogOut, PanelLeft, Users, ClipboardCheck, History, BarChart3, Download } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Page 1", path: "/" },
-  { icon: Users, label: "Page 2", path: "/some-path" },
+  { icon: LayoutDashboard, label: "Dashboard", path: "/" },
+  { icon: ClipboardCheck, label: "Registrar Presença", path: "/presenca" },
+  { icon: Users, label: "Alunos", path: "/alunos" },
+  { icon: History, label: "Histórico", path: "/historico" },
+  { icon: BarChart3, label: "Relatórios", path: "/relatorios" },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
@@ -61,11 +64,12 @@ export default function DashboardLayout({
       <div className="flex items-center justify-center min-h-screen">
         <div className="flex flex-col items-center gap-8 p-8 max-w-md w-full">
           <div className="flex flex-col items-center gap-6">
+            <img src="/manus-storage/logo-mocidade-dark_b201b379.jpeg" alt="Mocidade Azaluz" className="w-24 h-24 rounded-full" />
             <h1 className="text-2xl font-semibold tracking-tight text-center">
-              Sign in to continue
+              Mocidade Azaluz
             </h1>
             <p className="text-sm text-muted-foreground text-center max-w-sm">
-              Access to this dashboard requires authentication. Continue to launch the login flow.
+              GFE João Ramalho - Controle de Presença. Faça login para continuar.
             </p>
           </div>
           <Button
@@ -75,7 +79,7 @@ export default function DashboardLayout({
             size="lg"
             className="w-full shadow-lg hover:shadow-xl transition-all"
           >
-            Sign in
+            Entrar
           </Button>
         </div>
       </div>
@@ -170,8 +174,9 @@ function DashboardLayoutContent({
               </button>
               {!isCollapsed ? (
                 <div className="flex items-center gap-2 min-w-0">
-                  <span className="font-semibold tracking-tight truncate">
-                    Navigation
+                  <img src="/manus-storage/logo-mocidade-dark_b201b379.jpeg" alt="Logo" className="w-7 h-7 rounded-full" />
+                  <span className="font-semibold tracking-tight truncate text-primary">
+                    Mocidade Azaluz
                   </span>
                 </div>
               ) : null}
@@ -226,7 +231,7 @@ function DashboardLayoutContent({
                   className="cursor-pointer text-destructive focus:text-destructive"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>Sign out</span>
+                  <span>Sair</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

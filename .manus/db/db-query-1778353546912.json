@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE `attendance` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`meetingId` int NOT NULL,\n\t`studentId` int NOT NULL,\n\t`present` boolean NOT NULL DEFAULT true,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `attendance_id` PRIMARY KEY(`id`)\n);\n\nCREATE TABLE `meetings` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`date` date NOT NULL,\n\t`notes` text,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `meetings_id` PRIMARY KEY(`id`)\n);\n\nCREATE TABLE `students` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`name` varchar(255) NOT NULL,\n\t`active` boolean NOT NULL DEFAULT true,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `students_id` PRIMARY KEY(`id`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway06.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3VSUQkKyr125Szc.64f1d0a1f947 --database dFvLUyr9tNUT4kBLv6ZkAq --execute CREATE TABLE `attendance` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`meetingId` int NOT NULL,\n\t`studentId` int NOT NULL,\n\t`present` boolean NOT NULL DEFAULT true,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `attendance_id` PRIMARY KEY(`id`)\n);\n\nCREATE TABLE `meetings` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`date` date NOT NULL,\n\t`notes` text,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `meetings_id` PRIMARY KEY(`id`)\n);\n\nCREATE TABLE `students` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`name` varchar(255) NOT NULL,\n\t`active` boolean NOT NULL DEFAULT true,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `students_id` PRIMARY KEY(`id`)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 574
+}

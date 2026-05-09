@@ -1,0 +1,21 @@
+# Project TODO
+
+- [x] Configurar schema do banco (tabelas: students, meetings, attendance)
+- [x] Seed do banco com dados históricos (31 alunos, 9 encontros)
+- [x] Backend: CRUD de alunos (cadastrar, editar, remover)
+- [x] Backend: CRUD de encontros (criar, listar, deletar)
+- [x] Backend: Registro de presença (marcar/desmarcar alunos por encontro)
+- [x] Backend: Dashboard stats (total encontros, média presença, aluno destaque, próximo encontro)
+- [x] Backend: Relatório por aluno (presenças, faltas, percentual)
+- [x] Backend: Exportação Excel com gráficos
+- [x] Frontend: Tema verde-ciano espírita/jovem com DashboardLayout sidebar
+- [x] Frontend: Página Dashboard com visão geral
+- [x] Frontend: Página Registro de Presença (selecionar data, checkboxes)
+- [x] Frontend: Página Gerenciamento de Alunos (CRUD)
+- [x] Frontend: Página Histórico de Encontros
+- [x] Frontend: Página Relatório por Aluno
+- [x] Frontend: Botão de download Excel
+- [x] Autenticação privada (somente coordenador/professores)
+- [x] Testes vitest para procedures principais
+- [x] Dashboard: aluno destaque do mês atual + data do próximo encontro
+- [x] Excel: adicionar dados tabulados para gráficos na exportação (top 10, mensal, evolução)

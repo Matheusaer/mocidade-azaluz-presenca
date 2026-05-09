@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO `students` (`name`) VALUES\n('Agatha'), ('Ana Carolina'), ('Ana Gabi'), ('Bernardo Cassim'), ('Camila de Oliveira'),\n('Camilly'), ('Carlos'), ('Débora Araújo'), ('Emerson Dias'), ('Enzo Oliveira Guarizo'),\n('Gustavo'), ('Henrique'), ('Isa'), ('Julia Roque'), ('Kauani'),\n('Kauã'), ('Laura'), ('Leticia Gomes'), ('Lia'), ('Luan'),\n('Luigi'), ('Manu Cassim'), ('Marina'), ('Matteo'), ('Miguel'),\n('Pietra'), ('Rayanne Fonseca'), ('Renan'), ('Sofia Francesco'), ('Sofia Guimarães'),\n('Vitor Borges');",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway06.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3VSUQkKyr125Szc.64f1d0a1f947 --database dFvLUyr9tNUT4kBLv6ZkAq --execute INSERT INTO `students` (`name`) VALUES\n('Agatha'), ('Ana Carolina'), ('Ana Gabi'), ('Bernardo Cassim'), ('Camila de Oliveira'),\n('Camilly'), ('Carlos'), ('Débora Araújo'), ('Emerson Dias'), ('Enzo Oliveira Guarizo'),\n('Gustavo'), ('Henrique'), ('Isa'), ('Julia Roque'), ('Kauani'),\n('Kauã'), ('Laura'), ('Leticia Gomes'), ('Lia'), ('Luan'),\n('Luigi'), ('Manu Cassim'), ('Marina'), ('Matteo'), ('Miguel'),\n('Pietra'), ('Rayanne Fonseca'), ('Renan'), ('Sofia Francesco'), ('Sofia Guimarães'),\n('Vitor Borges');",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 270
+}

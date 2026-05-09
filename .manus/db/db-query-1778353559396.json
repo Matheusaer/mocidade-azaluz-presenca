@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO `meetings` (`date`) VALUES\n('2026-03-26'), ('2026-03-27'), ('2026-03-28'), ('2026-04-04'),\n('2026-04-11'), ('2026-04-18'), ('2026-04-25'), ('2026-05-02'), ('2026-05-09');",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway06.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3VSUQkKyr125Szc.64f1d0a1f947 --database dFvLUyr9tNUT4kBLv6ZkAq --execute INSERT INTO `meetings` (`date`) VALUES\n('2026-03-26'), ('2026-03-27'), ('2026-03-28'), ('2026-04-04'),\n('2026-04-11'), ('2026-04-18'), ('2026-04-25'), ('2026-05-02'), ('2026-05-09');",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 279
+}
