@@ -1,63 +1,57 @@
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useState, useMemo } from "react";
-import { CalendarPlus, Save, Users, Plus } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { CalendarPlus, Save, Users, CheckCircle2, UserCheck, UserX } from "lucide-react";
 
 export default function Presenca() {
-  const [selectedMeetingId, setSelectedMeetingId] = useState<string>("");
+  const today = new Date().toISOString().split('T')[0];
+  const [date, setDate] = useState(today);
   const [presentIds, setPresentIds] = useState<Set<number>>(new Set());
-  const [newDate, setNewDate] = useState("");
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [meetingId, setMeetingId] = useState<number | null>(null);
+  const [step, setStep] = useState<'date' | 'attendance'>('date');
 
-  const { data: meetingsList } = trpc.meetings.list.useQuery();
   const { data: studentsList } = trpc.students.list.useQuery();
-  const { data: attendanceData } = trpc.attendance.getByMeeting.useQuery(
-    { meetingId: Number(selectedMeetingId) },
-    { enabled: !!selectedMeetingId }
-  );
-
   const utils = trpc.useUtils();
+
+  // Ordenar alunos em ordem alfabética
+  const sortedStudents = useMemo(() => {
+    if (!studentsList) return [];
+    return [...studentsList].sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+  }, [studentsList]);
+
+  const createMeetingMutation = trpc.meetings.create.useMutation({
+    onSuccess: (data) => {
+      if (data) {
+        setMeetingId(data.id);
+        setStep('attendance');
+        toast.success("Encontro criado! Clique nos alunos presentes.");
+      }
+    },
+    onError: (err) => {
+      if (err.message.includes('já existe')) {
+        toast.error("Já existe um encontro nesta data. Veja no Histórico.");
+      } else {
+        toast.error("Erro ao criar encontro");
+      }
+    },
+  });
 
   const saveMutation = trpc.attendance.save.useMutation({
     onSuccess: () => {
-      toast.success("Presença salva com sucesso!");
-      utils.attendance.getByMeeting.invalidate();
+      toast.success("Presença registrada com sucesso!");
       utils.dashboard.stats.invalidate();
+      utils.meetings.listWithAttendance.invalidate();
+      setStep('date');
+      setPresentIds(new Set());
+      setMeetingId(null);
     },
     onError: () => {
       toast.error("Erro ao salvar presença");
     },
   });
-
-  const createMeetingMutation = trpc.meetings.create.useMutation({
-    onSuccess: (data) => {
-      toast.success("Encontro criado!");
-      utils.meetings.list.invalidate();
-      setDialogOpen(false);
-      if (data) {
-        setSelectedMeetingId(String(data.id));
-      }
-    },
-    onError: () => {
-      toast.error("Erro ao criar encontro");
-    },
-  });
-
-  // When attendance data loads, populate the checkboxes
-  useMemo(() => {
-    if (attendanceData) {
-      const ids = new Set(attendanceData.filter(a => a.present).map(a => a.studentId));
-      setPresentIds(ids);
-    } else {
-      setPresentIds(new Set());
-    }
-  }, [attendanceData]);
 
   const toggleStudent = (studentId: number) => {
     setPresentIds(prev => {
@@ -71,150 +65,147 @@ export default function Presenca() {
     });
   };
 
-  const selectAll = () => {
-    if (studentsList) {
-      setPresentIds(new Set(studentsList.map(s => s.id)));
+  const handleCreateMeeting = () => {
+    if (!date) {
+      toast.error("Selecione uma data");
+      return;
     }
-  };
-
-  const deselectAll = () => {
-    setPresentIds(new Set());
+    createMeetingMutation.mutate({ date });
   };
 
   const handleSave = () => {
-    if (!selectedMeetingId) {
-      toast.error("Selecione um encontro primeiro");
-      return;
-    }
+    if (!meetingId) return;
     saveMutation.mutate({
-      meetingId: Number(selectedMeetingId),
+      meetingId,
       presentStudentIds: Array.from(presentIds),
     });
   };
 
-  const handleCreateMeeting = () => {
-    if (!newDate) {
-      toast.error("Selecione uma data");
-      return;
-    }
-    createMeetingMutation.mutate({ date: newDate });
-  };
-
-  const selectedMeeting = meetingsList?.find(m => String(m.id) === selectedMeetingId);
+  const formattedDate = date 
+    ? new Date(date + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })
+    : '';
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-primary">Registrar Presença</h1>
-          <p className="text-muted-foreground">Marque os alunos presentes no encontro</p>
-        </div>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button variant="outline" className="gap-2">
-              <Plus className="h-4 w-4" />
-              Novo Encontro
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Criar Novo Encontro</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 pt-4">
-              <Input
-                type="date"
-                value={newDate}
-                onChange={e => setNewDate(e.target.value)}
-                className="w-full"
-              />
-              <Button onClick={handleCreateMeeting} className="w-full" disabled={createMeetingMutation.isPending}>
-                <CalendarPlus className="h-4 w-4 mr-2" />
-                Criar Encontro
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+      <div>
+        <h1 className="text-2xl font-bold text-primary">Registrar Presença</h1>
+        <p className="text-muted-foreground">Registre a presença de um novo encontro da Mocidade</p>
       </div>
 
-      <Card className="border-border/50 bg-card/80">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <CalendarPlus className="h-5 w-5 text-primary" />
-            Selecionar Encontro
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Select value={selectedMeetingId} onValueChange={setSelectedMeetingId}>
-            <SelectTrigger className="w-full md:w-80">
-              <SelectValue placeholder="Escolha a data do encontro..." />
-            </SelectTrigger>
-            <SelectContent>
-              {meetingsList?.map(meeting => (
-                <SelectItem key={meeting.id} value={String(meeting.id)}>
-                  {new Date(meeting.date + 'T12:00:00').toLocaleDateString('pt-BR', { 
-                    weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' 
-                  })}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </CardContent>
-      </Card>
-
-      {selectedMeetingId && studentsList && (
-        <Card className="border-border/50 bg-card/80">
+      {step === 'date' && (
+        <Card className="border-primary/30 bg-gradient-to-br from-primary/5 to-card shadow-lg shadow-primary/5">
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Users className="h-5 w-5 text-primary" />
-                Lista de Alunos
-                <span className="text-sm font-normal text-muted-foreground ml-2">
-                  ({presentIds.size}/{studentsList.length} presentes)
-                </span>
-              </CardTitle>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={selectAll}>
-                  Todos
-                </Button>
-                <Button variant="outline" size="sm" onClick={deselectAll}>
-                  Nenhum
-                </Button>
+            <CardTitle className="text-xl flex items-center gap-3">
+              <div className="p-3 rounded-xl bg-primary/20">
+                <CalendarPlus className="h-6 w-6 text-primary" />
               </div>
-            </div>
+              Novo Encontro
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-              {studentsList.map(student => (
-                <label
-                  key={student.id}
-                  className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
-                    presentIds.has(student.id)
-                      ? "bg-primary/10 border-primary/40"
-                      : "bg-secondary/30 border-border/50 hover:bg-secondary/50"
-                  }`}
-                >
-                  <Checkbox
-                    checked={presentIds.has(student.id)}
-                    onCheckedChange={() => toggleStudent(student.id)}
-                  />
-                  <span className="text-sm font-medium">{student.name}</span>
-                </label>
-              ))}
+          <CardContent className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-muted-foreground">
+                Data do encontro
+              </label>
+              <Input
+                type="date"
+                value={date}
+                onChange={e => setDate(e.target.value)}
+                className="w-full md:w-72 text-lg h-12"
+              />
+              {date && (
+                <p className="text-sm text-primary font-medium capitalize">
+                  {formattedDate}
+                </p>
+              )}
             </div>
-
-            <div className="mt-6 flex justify-end">
-              <Button
-                onClick={handleSave}
-                disabled={saveMutation.isPending}
-                className="gap-2"
-                size="lg"
-              >
-                <Save className="h-4 w-4" />
-                {saveMutation.isPending ? "Salvando..." : "Salvar Presença"}
-              </Button>
-            </div>
+            <Button 
+              onClick={handleCreateMeeting} 
+              disabled={createMeetingMutation.isPending || !date}
+              size="lg"
+              className="w-full md:w-auto text-base px-8 h-12 shadow-lg"
+            >
+              <CalendarPlus className="h-5 w-5 mr-2" />
+              {createMeetingMutation.isPending ? "Criando..." : "Iniciar Chamada"}
+            </Button>
           </CardContent>
         </Card>
+      )}
+
+      {step === 'attendance' && sortedStudents.length > 0 && (
+        <div className="space-y-4">
+          <Card className="border-primary/30 bg-card/80">
+            <CardContent className="py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="h-5 w-5 text-primary" />
+                  <div>
+                    <p className="font-medium capitalize">{formattedDate}</p>
+                    <p className="text-sm text-muted-foreground">Clique no nome do aluno para marcar presença</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-2xl font-bold text-primary">{presentIds.size}</p>
+                  <p className="text-xs text-muted-foreground">de {sortedStudents.length} presentes</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-border/50 bg-card/80">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Users className="h-5 w-5 text-primary" />
+                Lista de Chamada
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-1">
+                {sortedStudents.map(student => {
+                  const isPresent = presentIds.has(student.id);
+                  return (
+                    <button
+                      key={student.id}
+                      onClick={() => toggleStudent(student.id)}
+                      className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all text-left ${
+                        isPresent
+                          ? "bg-primary/15 border-primary/40 shadow-sm"
+                          : "bg-secondary/20 border-border/40 hover:bg-secondary/40"
+                      }`}
+                    >
+                      <span className={`font-medium ${isPresent ? 'text-primary' : ''}`}>
+                        {student.name}
+                      </span>
+                      {isPresent ? (
+                        <UserCheck className="h-5 w-5 text-primary" />
+                      ) : (
+                        <UserX className="h-5 w-5 text-muted-foreground/40" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="mt-6 flex items-center justify-between border-t border-border/50 pt-4">
+                <Button 
+                  variant="outline" 
+                  onClick={() => { setStep('date'); setMeetingId(null); setPresentIds(new Set()); }}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  onClick={handleSave}
+                  disabled={saveMutation.isPending}
+                  size="lg"
+                  className="gap-2 px-8 shadow-lg"
+                >
+                  <Save className="h-4 w-4" />
+                  {saveMutation.isPending ? "Salvando..." : "Salvar Presença"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       )}
     </div>
   );

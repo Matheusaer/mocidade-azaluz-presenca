@@ -19,3 +19,7 @@
 - [x] Testes vitest para procedures principais
 - [x] Dashboard: aluno destaque do mês atual + data do próximo encontro
 - [x] Excel: adicionar dados tabulados para gráficos na exportação (top 10, mensal, evolução)
+- [x] Registrar Presença: simplificar para apenas data do encontro + checkboxes (sem selecionar encontro antigo)
+- [x] Dashboard: dar destaque maior ao botão/card de Registrar Presença
+- [x] Histórico: permitir selecionar encontros já realizados e editar presença
+- [x] Registrar Presença: lista de alunos em ordem alfabética, clicar no nome para marcar

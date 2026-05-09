@@ -1,6 +1,8 @@
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Calendar, TrendingUp, Award, Star, CalendarClock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Users, Calendar, TrendingUp, Award, Star, CalendarClock, CalendarPlus, ClipboardList } from "lucide-react";
+import { Link } from "wouter";
 
 export default function Home() {
   const { data: stats, isLoading } = trpc.dashboard.stats.useQuery();
@@ -12,14 +14,17 @@ export default function Home() {
           <h1 className="text-2xl font-bold text-primary">Dashboard</h1>
           <p className="text-muted-foreground">Visão geral da Mocidade Azaluz</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3, 4, 5, 6].map(i => (
-            <Card key={i} className="animate-pulse">
-              <CardContent className="p-6">
-                <div className="h-16 bg-muted rounded" />
-              </CardContent>
-            </Card>
-          ))}
+        <div className="space-y-4">
+          <div className="h-32 bg-muted rounded-xl animate-pulse" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[1, 2, 3, 4, 5, 6].map(i => (
+              <Card key={i} className="animate-pulse">
+                <CardContent className="p-6">
+                  <div className="h-16 bg-muted rounded" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -39,6 +44,29 @@ export default function Home() {
         <h1 className="text-2xl font-bold text-primary">Dashboard</h1>
         <p className="text-muted-foreground">Visão geral da Mocidade Azaluz - GFE João Ramalho</p>
       </div>
+
+      {/* DESTAQUE: Registrar Presença */}
+      <Link href="/presenca">
+        <Card className="border-primary/50 bg-gradient-to-r from-primary/10 via-primary/5 to-card shadow-lg shadow-primary/10 cursor-pointer hover:shadow-primary/20 hover:border-primary/70 transition-all group">
+          <CardContent className="py-6 px-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="p-4 rounded-2xl bg-primary/20 group-hover:bg-primary/30 transition-colors">
+                  <CalendarPlus className="h-8 w-8 text-primary" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-foreground">Registrar Presença</h2>
+                  <p className="text-muted-foreground">Clique aqui para iniciar a chamada do encontro de hoje</p>
+                </div>
+              </div>
+              <Button size="lg" className="hidden md:flex gap-2 shadow-lg">
+                <CalendarPlus className="h-5 w-5" />
+                Iniciar Chamada
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </Link>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <Card className="border-border/50 bg-card/80 backdrop-blur">
@@ -155,24 +183,28 @@ export default function Home() {
             <CardTitle className="text-lg">Acesso Rápido</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <a href="/presenca" className="flex items-center gap-3 p-3 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors">
-              <div className="p-2 rounded-md bg-primary/20">
-                <Calendar className="h-4 w-4 text-primary" />
+            <Link href="/historico">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors cursor-pointer">
+                <div className="p-2 rounded-md bg-primary/20">
+                  <ClipboardList className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Histórico de Encontros</p>
+                  <p className="text-xs text-muted-foreground">Ver e editar presenças anteriores</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-medium">Registrar Presença</p>
-                <p className="text-xs text-muted-foreground">Marcar presença do encontro de hoje</p>
+            </Link>
+            <Link href="/alunos">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors cursor-pointer">
+                <div className="p-2 rounded-md bg-primary/20">
+                  <Users className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Gerenciar Alunos</p>
+                  <p className="text-xs text-muted-foreground">Cadastrar ou editar participantes</p>
+                </div>
               </div>
-            </a>
-            <a href="/alunos" className="flex items-center gap-3 p-3 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors">
-              <div className="p-2 rounded-md bg-primary/20">
-                <Users className="h-4 w-4 text-primary" />
-              </div>
-              <div>
-                <p className="text-sm font-medium">Gerenciar Alunos</p>
-                <p className="text-xs text-muted-foreground">Cadastrar ou editar participantes</p>
-              </div>
-            </a>
+            </Link>
           </CardContent>
         </Card>
       </div>
