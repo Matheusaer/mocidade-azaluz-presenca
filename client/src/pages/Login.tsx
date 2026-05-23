@@ -37,7 +37,7 @@ export default function Login() {
     <div className="flex items-center justify-center min-h-screen bg-background">
       <div className="flex flex-col items-center gap-8 p-8 max-w-sm w-full">
         <div className="flex flex-col items-center gap-3 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">Mocidade Azaluz</h1>
+          <h1 className="text-2xl font-semibold tracking-tight" translate="no">Mocidade Azaluz</h1>
           <p className="text-sm text-muted-foreground">
             GFE João Ramalho — Controle de Presença
           </p>
