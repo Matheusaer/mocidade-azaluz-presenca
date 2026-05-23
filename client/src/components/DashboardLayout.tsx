@@ -19,13 +19,11 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users, ClipboardCheck, History, BarChart3, Download } from "lucide-react";
+import { LayoutDashboard, LogOut, PanelLeft, Users, ClipboardCheck, History, BarChart3 } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
-import { Button } from "./ui/button";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/" },
@@ -50,40 +48,20 @@ export default function DashboardLayout({
     return saved ? parseInt(saved, 10) : DEFAULT_WIDTH;
   });
   const { loading, user } = useAuth();
+  const [, setLocation] = useLocation();
 
   useEffect(() => {
     localStorage.setItem(SIDEBAR_WIDTH_KEY, sidebarWidth.toString());
   }, [sidebarWidth]);
 
-  if (loading) {
-    return <DashboardLayoutSkeleton />
-  }
+  useEffect(() => {
+    if (!loading && !user) {
+      setLocation("/login");
+    }
+  }, [loading, user, setLocation]);
 
-  if (!user) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="flex flex-col items-center gap-8 p-8 max-w-md w-full">
-          <div className="flex flex-col items-center gap-6">
-            <img src="/manus-storage/logo-mocidade-dark_b201b379.jpeg" alt="Mocidade Azaluz" className="w-24 h-24 rounded-full" />
-            <h1 className="text-2xl font-semibold tracking-tight text-center">
-              Mocidade Azaluz
-            </h1>
-            <p className="text-sm text-muted-foreground text-center max-w-sm">
-              GFE João Ramalho - Controle de Presença. Faça login para continuar.
-            </p>
-          </div>
-          <Button
-            onClick={() => {
-              window.location.href = getLoginUrl();
-            }}
-            size="lg"
-            className="w-full shadow-lg hover:shadow-xl transition-all"
-          >
-            Entrar
-          </Button>
-        </div>
-      </div>
-    );
+  if (loading || !user) {
+    return <DashboardLayoutSkeleton />;
   }
 
   return (
@@ -174,7 +152,6 @@ function DashboardLayoutContent({
               </button>
               {!isCollapsed ? (
                 <div className="flex items-center gap-2 min-w-0">
-                  <img src="/manus-storage/logo-mocidade-dark_b201b379.jpeg" alt="Logo" className="w-7 h-7 rounded-full" />
                   <span className="font-semibold tracking-tight truncate text-primary">
                     Mocidade Azaluz
                   </span>

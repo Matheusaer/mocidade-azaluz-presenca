@@ -10,20 +10,26 @@ import Presenca from "./pages/Presenca";
 import Alunos from "./pages/Alunos";
 import Historico from "./pages/Historico";
 import Relatorios from "./pages/Relatorios";
+import Login from "./pages/Login";
 
 function Router() {
   return (
-    <DashboardLayout>
-      <Switch>
-        <Route path={"/"} component={Home} />
-        <Route path={"/presenca"} component={Presenca} />
-        <Route path={"/alunos"} component={Alunos} />
-        <Route path={"/historico"} component={Historico} />
-        <Route path={"/relatorios"} component={Relatorios} />
-        <Route path={"/404"} component={NotFound} />
-        <Route component={NotFound} />
-      </Switch>
-    </DashboardLayout>
+    <Switch>
+      <Route path="/login" component={Login} />
+      <Route>
+        <DashboardLayout>
+          <Switch>
+            <Route path={"/"} component={Home} />
+            <Route path={"/presenca"} component={Presenca} />
+            <Route path={"/alunos"} component={Alunos} />
+            <Route path={"/historico"} component={Historico} />
+            <Route path={"/relatorios"} component={Relatorios} />
+            <Route path={"/404"} component={NotFound} />
+            <Route component={NotFound} />
+          </Switch>
+        </DashboardLayout>
+      </Route>
+    </Switch>
   );
 }
 
