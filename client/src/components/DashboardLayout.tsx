@@ -161,7 +161,7 @@ function DashboardLayoutContent({
                 <img
                   src="/logo.png"
                   alt="Mocidade Azaluz"
-                  className="w-24 h-24 rounded-2xl shadow-[0_0_30px_rgba(34,197,94,0.55)] ring-1 ring-green-500/40"
+                  className="w-24 h-24 rounded-2xl shadow-[0_0_14px_rgba(34,197,94,0.25)] ring-1 ring-green-500/25"
                 />
               </div>
             ) : null}

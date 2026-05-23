@@ -40,7 +40,7 @@ export default function Login() {
           <img
             src="/logo.png"
             alt="Mocidade Azaluz"
-            className="w-28 h-28 rounded-2xl shadow-[0_0_40px_rgba(34,197,94,0.6)] ring-1 ring-green-500/40"
+            className="w-28 h-28 rounded-2xl shadow-[0_0_18px_rgba(34,197,94,0.25)] ring-1 ring-green-500/25"
           />
           <h1 className="text-2xl font-semibold tracking-tight" translate="no">Mocidade Azaluz</h1>
           <p className="text-sm text-muted-foreground">
