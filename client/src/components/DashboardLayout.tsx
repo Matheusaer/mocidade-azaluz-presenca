@@ -141,7 +141,7 @@ function DashboardLayoutContent({
           className="border-r-0"
           disableTransition={isResizing}
         >
-          <SidebarHeader className="h-16 justify-center">
+          <SidebarHeader className="pb-2">
             <div className="flex items-center gap-3 px-2 transition-all w-full">
               <button
                 onClick={toggleSidebar}
@@ -151,18 +151,20 @@ function DashboardLayoutContent({
                 <PanelLeft className="h-4 w-4 text-muted-foreground" />
               </button>
               {!isCollapsed ? (
-                <div className="flex items-center gap-2 min-w-0">
-                  <img
-                    src="/logo.png"
-                    alt="Mocidade Azaluz"
-                    className="w-8 h-8 rounded-lg shrink-0 shadow-[0_0_12px_rgba(34,197,94,0.55)] ring-1 ring-green-500/40"
-                  />
-                  <span className="font-semibold tracking-tight truncate text-primary" translate="no">
-                    Mocidade Azaluz
-                  </span>
-                </div>
+                <span className="font-semibold tracking-tight truncate text-primary" translate="no">
+                  Mocidade Azaluz
+                </span>
               ) : null}
             </div>
+            {!isCollapsed ? (
+              <div className="flex justify-center pt-3 pb-1">
+                <img
+                  src="/logo.png"
+                  alt="Mocidade Azaluz"
+                  className="w-24 h-24 rounded-2xl shadow-[0_0_30px_rgba(34,197,94,0.55)] ring-1 ring-green-500/40"
+                />
+              </div>
+            ) : null}
           </SidebarHeader>
 
           <SidebarContent className="gap-0">
