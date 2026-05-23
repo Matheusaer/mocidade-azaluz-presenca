@@ -152,6 +152,11 @@ function DashboardLayoutContent({
               </button>
               {!isCollapsed ? (
                 <div className="flex items-center gap-2 min-w-0">
+                  <img
+                    src="/logo.png"
+                    alt="Mocidade Azaluz"
+                    className="w-8 h-8 rounded-lg shrink-0 shadow-[0_0_12px_rgba(34,197,94,0.55)] ring-1 ring-green-500/40"
+                  />
                   <span className="font-semibold tracking-tight truncate text-primary" translate="no">
                     Mocidade Azaluz
                   </span>

@@ -36,7 +36,12 @@ export default function Login() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
       <div className="flex flex-col items-center gap-8 p-8 max-w-sm w-full">
-        <div className="flex flex-col items-center gap-3 text-center">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <img
+            src="/logo.png"
+            alt="Mocidade Azaluz"
+            className="w-28 h-28 rounded-2xl shadow-[0_0_40px_rgba(34,197,94,0.6)] ring-1 ring-green-500/40"
+          />
           <h1 className="text-2xl font-semibold tracking-tight" translate="no">Mocidade Azaluz</h1>
           <p className="text-sm text-muted-foreground">
             GFE João Ramalho — Controle de Presença
